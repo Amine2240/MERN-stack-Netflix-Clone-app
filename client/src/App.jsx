@@ -6,6 +6,9 @@ import Netflix from "./components/netflix";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Searchcomp from "./components/searchcomp";
 import Mylist from "./components/mylist";
+import axios from "axios";
+axios.defaults.withCredentials = true;
+
 
 function App() {
   return (
@@ -16,7 +19,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/netflix" element={<Netflix />} />
         <Route path="/searchpage" element={<Searchcomp />} />
-        <Route path="/mylist" element={<Mylist/>} />
+        <Route path="/mylist" element={<Mylist />} />
       </Routes>
     </Router>
   );

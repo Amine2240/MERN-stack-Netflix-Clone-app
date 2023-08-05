@@ -3,23 +3,27 @@ const mongoose = require("mongoose");
 const Movieschema = new mongoose.Schema({
   image: {
     type: String,
-    require: true,
+    required: true,
   },
   title: {
     type: String,
-    require: true,
+    required: true,
   },
   vote: {
     type: Number,
-    require: true,
+    required: true,
   },
   genre_ids: {
     type: [],
-    require: true,
+    required: true,
   },
   id: {
     type: String,
-    require: true,
+    required: true,
+  },
+  user_id: {
+    type: String,
+    required: true,
   },
 });
 const Moviemodel = mongoose.model("movies", Movieschema);

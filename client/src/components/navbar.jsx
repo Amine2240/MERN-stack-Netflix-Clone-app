@@ -1,20 +1,25 @@
 import { useSelector, useDispatch } from "react-redux";
 import { settrue } from "../redux/signinslice";
 import "../App.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { setinputvalue } from "../redux/inputvalueslice";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { setsearchtrue } from "../redux/searchslice";
+import { authcontext } from "../context/authcontext";
+import axios from "axios";
 
 const Navbar = () => {
+  const navgateTo = useNavigate();
+
+  const { boolauth, getauthbool } = useContext(authcontext);
   const value = useSelector((state) => state.inputvalue.value);
-  const issignin = useSelector((state) => state.issignin.value);
+  // const issignin = useSelector((state) => state.issignin.value);
   const dispatch = useDispatch();
   const [scrollY, setScrollY] = useState(0);
   const [issearch, setissearch] = useState(false);
-  // const [issearchtmp, setissearchtmp] = useState(false);
+  // const [!issearchtmp, setissearchtmp] = useState(false);
   // const [tmp, settmp] = useState(0);
 
   const handlescroll = () => {
@@ -25,6 +30,17 @@ const Navbar = () => {
     window.addEventListener("scroll", handlescroll);
   }, []);
 
+  const logoutfunction = async () => {
+    try {
+      const response = await axios.post("http://localhost:5000/logout");
+      console.log("logout response", response);
+      getauthbool();
+      navgateTo("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  console.log("booolauth", boolauth);
   return (
     <>
       <nav
@@ -37,9 +53,18 @@ const Navbar = () => {
             netflix
           </p>
         </Link>
-
-        <div className=" flex">
-           
+        {!boolauth && (
+          <button
+            className=" text-white border-2 border-transparent bg-red-500 px-3 h-9 font-medium rounded-sm capitalize z-10"
+            onClick={() => {
+              dispatch(settrue());
+            }}
+          >
+            sign in{" "}
+          </button>
+        )}
+        {boolauth && (
+          <div className=" flex">
             <>
               <Link to="mylist">
                 <p className=" text-xl font-semibold mr-5 hover:text-red-500 transition-all capitalize cursor-pointer">
@@ -92,19 +117,18 @@ const Navbar = () => {
                 />
               </div>
             </>
-          
 
-          {!issignin && (
             <button
               className=" text-white border-2 border-transparent bg-red-500 px-3 h-9 font-medium rounded-sm capitalize z-10"
               onClick={() => {
-                dispatch(settrue());
+                getauthbool();
+                logoutfunction();
               }}
             >
-              sign in{" "}
+              log out{" "}
             </button>
-          )}
-        </div>
+          </div>
+        )}
       </nav>
     </>
   );
