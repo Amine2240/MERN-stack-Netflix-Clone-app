@@ -69,7 +69,7 @@ const Login = ({ togglelogin }) => {
             name="email"
             onChange={(e) => {
               setformdata({ ...formdata, email: e.target.value });
-            }}
+            }} 
           />
           <div className=" w-full relative">
             {issee && (
